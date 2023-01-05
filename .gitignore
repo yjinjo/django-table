@@ -123,5 +123,14 @@ fabric.properties
 !.idea/runConfigurations
 
 .env
+# Byte-compiled / optimized / DLL files
+/__pycache__/
+*/__pycache__/*
+*.py[cod]
+*.pyc
+
+**/*.pyc
+**/**/*.pyc
+
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,macos
