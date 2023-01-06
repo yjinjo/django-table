@@ -39,5 +39,6 @@ def result(request):
     while len(results) < 6:
         results.append(box.pop())
 
+    results.sort()
     context = {'numbers': results}
     return render(request, 'first/result.html', context)
