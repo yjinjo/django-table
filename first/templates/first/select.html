@@ -1,25 +1,9 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<p>
-    {% if number|divisibleby:2 %}
-    짝수입니다.
-    {% else %}
-    홀수입니다.
-    {% endif %}
-</p>
+{% extends 'first/base.html' %}
+{% block content %}
+<p>수를 하나 입력해주세요.</p>
+<form action="{% url 'result' %}" method="GET">
+    <input type="number" name="number"> <!-- 사용자가 입력할 숫자 데이터에 number라는 이름을 줍니다. -->
+    <button type="submit">결과 보기</button>
+</form>
 
-<p>
-    <a href="{% url 'result' %}">
-        <button>결과보기</button>
-    </a>
-</p>
-</body>
-</html>
+{% endblock %}
