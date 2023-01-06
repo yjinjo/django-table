@@ -5,14 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Title</title>
+    <title>Document</title>
 </head>
 <body>
-<p>Hello world!</p>
-<p>{{ current_date }}</p>
-<p>{{ current_date|date:"Y년 m월 d일 H시 i분 s초" }}</p>
-
-<!--<a href="/select">시작하기!</a>-->
-<a href="{% url 'select' %}">시작하기!</a>
+<ul>
+    {% for num in numbers %}
+    <li>{{ num }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>
