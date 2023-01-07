@@ -20,6 +20,7 @@ from first import views  # views.py 파일을 임포트 합니다.
 
 urlpatterns = [
     # path('', views.index, name='index'),  # views 파일의 index 메서드에 연결
-    path('', include('first.urls')),
+    path('first/', include('first.urls')),
+    path('second/', include('second.urls')),
     path('admin/', admin.site.urls),
 ]
