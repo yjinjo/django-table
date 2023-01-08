@@ -22,5 +22,6 @@ urlpatterns = [
     # path('', views.index, name='index'),  # views 파일의 index 메서드에 연결
     path('first/', include('first.urls')),
     path('second/', include('second.urls')),
+    path('third/', include('third.urls')),
     path('admin/', admin.site.urls),
 ]
