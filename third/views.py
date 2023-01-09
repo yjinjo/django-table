@@ -50,3 +50,10 @@ def detail(request):
         return render(request, "third/detail.html", {"item": item})
     # 만약 id가 없는 경우(예를 들어 새로운 글 post등), 리스트 화면으로 넘어갑니다.
     return HttpResponseRedirect("/third/list/")
+
+
+def delete(request):
+    if "id" in request.GET:
+        item = get_object_or_404(Restaurant, pk=request.GET.get("id"))
+        item.delete()
+    return HttpResponseRedirect("/third/list")
