@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from third.models import Restaurant
-from third.forms import RestaurantForm
+from django.shortcuts import render, get_object_or_404, redirect
+from third.models import Restaurant, Review
+from third.forms import RestaurantForm, ReviewForm
 from django.http import HttpResponseRedirect
 
 
@@ -44,10 +44,11 @@ def update(request):
     return HttpResponseRedirect("/third/list/")
 
 
-def detail(request):
-    if "id" in request.GET:
-        item = get_object_or_404(Restaurant, pk=request.GET.get("id"))
-        return render(request, "third/detail.html", {"item": item})
+def detail(request, id):  # restaurant의 id (pk)를 직접 url path parameter을 통해 전달 받습니다."
+    if id:
+        item = get_object_or_404(Restaurant, pk=id)
+        reviews = Review.objects.filter(restaurant=item).all()
+        return render(request, "third/detail.html", {"item": item, "reviews": reviews})
     # 만약 id가 없는 경우(예를 들어 새로운 글 post등), 리스트 화면으로 넘어갑니다.
     return HttpResponseRedirect("/third/list/")
 
@@ -57,3 +58,15 @@ def delete(request):
         item = get_object_or_404(Restaurant, pk=request.GET.get("id"))
         item.delete()
     return HttpResponseRedirect("/third/list")
+
+
+def review_create(request, restaurant_id):
+    if request.method == "POST":
+        form = ReviewForm(request.POST)  #
+        if form.is_valid():  # 데이터가 form 클래스에서 정의한 조건 (max_length 등)을 만족하는지 체크합니다.
+            form.save()  # save 메소드로 입력받은 데이터를 레코드로 추가합니다.
+        return redirect("restaurant-detail", id=restaurant_id)  # 전화면으로 이동합니다.
+
+    item = get_object_or_404(Restaurant, pk=restaurant_id)
+    form = ReviewForm(initial={"restaurant": item})
+    return render(request, "third/review_create.html", {"form": form, "item": item})
