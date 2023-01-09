@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from third.models import Restaurant
 from third.forms import RestaurantForm
 from django.http import HttpResponseRedirect
@@ -26,3 +26,20 @@ def create(request):
         return HttpResponseRedirect("/third/list/")  # 리스트 화면으로 이동합니다.
     form = RestaurantForm()
     return render(request, "third/create.html", {"form": form})
+
+
+def update(request):
+    if request.method == "POST" and "id" in request.POST:
+        # item = Restaurant.objects.get(pk=request.POST.get("id"))
+        item = get_object_or_404(Restaurant, pk=request.POST.get("id"))
+        form = RestaurantForm(request.POST, instance=item)  # instance 인자(수정대상) 지정
+
+        if form.is_valid():
+            form.save()
+    elif "id" in request.GET:
+        # item = Restaurant.objects.get(pk=request.GET.get("id"))
+        item = get_object_or_404(Restaurant, pk=request.GET.get("id"))
+        form = RestaurantForm(instance=item)
+        return render(request, "third/update.html", {"form": form})
+
+    return HttpResponseRedirect("/third/list/")
