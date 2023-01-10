@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from third.models import Restaurant, Review
-from third.forms import RestaurantForm, ReviewForm
+from third.forms import RestaurantForm, ReviewForm, UpdateRestaurantForm
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Avg
 
@@ -35,9 +35,16 @@ def update(request):
     if request.method == "POST" and "id" in request.POST:
         # item = Restaurant.objects.get(pk=request.POST.get("id"))
         item = get_object_or_404(Restaurant, pk=request.POST.get("id"))
-        form = RestaurantForm(request.POST, instance=item)  # instance 인자(수정대상) 지정
+        password = request.POST.get("password", "")  # 패스워드가 입력이 되었는지 확인합니다.
+        # 게시글을 update 할 때는 새로운 패스워드를 입력하면 안되므로 password를 exclude한
+        # RestaurantForm 대신에 UpdateRestaurantForm을 사용합니다.
+        # form = RestaurantForm(request.POST, instance=item)  # instance 인자(수정대상) 지정
+        form = UpdateRestaurantForm(
+            request.POST, instance=item
+        )  # NOTE: instance 인자(수정대상) 지정
 
-        if form.is_valid():
+        # 사용자가 입력한 password와 DB에서 가져온 password의 값이 일치한다면,
+        if form.is_valid() and password == item.password:  # 비밀번호 검증을 추가합니다.
             form.save()
     elif "id" in request.GET:
         # item = Restaurant.objects.get(pk=request.GET.get("id"))
