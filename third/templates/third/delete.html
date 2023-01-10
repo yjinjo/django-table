@@ -1,5 +1,6 @@
 {% extends 'third/base.html' %}
 {% load static %}
+<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 {% block content %}
 <div class="container">
     <form action="{% url 'restaurant-delete' id=item.id %}" method="POST">
