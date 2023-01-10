@@ -76,3 +76,16 @@ def review_delete(request, restaurant_id, review_id):
     item = get_object_or_404(Review, pk=review_id)
     item.delete()
     return redirect("restaurant-detail", id=restaurant_id)  # 전 화면으로 이동합니다.
+
+
+def review_list(request):
+    reviews = (
+        Review.objects.all().select_related().order_by("-created_at")
+    )  # 모든 리뷰를 받은 다음에 최신순으로 정렬합니다.
+    paginator = Paginator(reviews, 10)  # 한 페이지에 10개씩 표시합니다.
+
+    page = request.GET.get("page")  # query params에서 page 데이터를 가져옵니다.
+    items = paginator.get_page(page)  # 해당 페이지의 아이템으로 필터링 합니다.
+
+    context = {"reviews": items}
+    return render(request, "third/review_list.html", context)

@@ -20,4 +20,5 @@ urlpatterns = [
         views.review_delete,
         name="review-delete",
     ),
+    path("review/list/", views.review_list, name="review-list"),
 ]
